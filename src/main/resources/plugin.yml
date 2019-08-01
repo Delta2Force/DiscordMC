@@ -1,0 +1,9 @@
+name: DiscordMC
+author: Delta2Force
+version: 1.0
+api-version: 1.13
+main: me.delta2force.discordmc.RedditBrowserPlugin
+
+commands:
+ discord:
+  description: Use discord!
