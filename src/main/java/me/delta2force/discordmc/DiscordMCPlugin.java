@@ -16,6 +16,7 @@ public class DiscordMCPlugin extends JavaPlugin{
 	public void onEnable() {
 		this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
 		utils = new DiscordMCUtils(this);
+		saveDefaultConfig();
 	}
 	
 	@Override
@@ -26,7 +27,7 @@ public class DiscordMCPlugin extends JavaPlugin{
 				p.sendMessage(ChatColor.RED + "This can only be executed as an OP!");
 			}else {
 				if(command.getName().equals("discord")) {
-					
+					utils.addPlayer(p);
 				}
 			}
 		}else {

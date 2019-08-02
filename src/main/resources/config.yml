@@ -1,0 +1,4 @@
+# The token of your discord bot. This can only be a bot account
+# since selfbots (using your account in a custom client) are actually forbidden
+# and can get you banned from using discord permanently.
+botToken: "Insert here"
