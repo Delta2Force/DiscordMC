@@ -6,12 +6,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.delta2force.discordmc.listener.EventListener;
+import me.delta2force.discordmc.utils.DiscordMCUtils;
 import net.md_5.bungee.api.ChatColor;
 
 public class DiscordMCPlugin extends JavaPlugin{
+	private DiscordMCUtils utils;
+	
 	@Override
 	public void onEnable() {
 		this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
+		utils = new DiscordMCUtils(this);
 	}
 	
 	@Override
@@ -27,5 +31,9 @@ public class DiscordMCPlugin extends JavaPlugin{
 			sender.sendMessage(ChatColor.RED + "This can only be executed as a player!");
 		}
 		return true;
+	}
+	
+	public DiscordMCUtils getUtils() {
+		return utils;
 	}
 }
