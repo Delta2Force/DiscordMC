@@ -9,13 +9,24 @@ import javax.security.auth.login.LoginException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Directional;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.MapMeta;
 
 import me.delta2force.discordmc.DiscordMCPlugin;
+import me.delta2force.discordmc.maprenderer.DiscordMapRenderer;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -52,12 +63,43 @@ public class DiscordMCUtils implements EventListener{
 	
 	public void setupInterface(Player p) {
 		List<Guild> guilds = jdaClient.getGuilds();
-		int i = 0;
+		Location topLoc = randomTopCoordinate();
+		int x = 0;
 		for(Guild g : guilds) {
-			Location topLoc = randomTopCoordinate();
-			i++;
-			p.sendMessage(getPrefix() + ChatColor.GREEN + "Guild " + g.getName() + " set up. ("+i+"/"+guilds.size()+")");
+			topLoc.clone().add(x, 0, 0).getBlock().setType(Material.SMOOTH_STONE);
+			topLoc.clone().add(x, -1, 0).getBlock().setType(Material.SMOOTH_STONE);
+			
+			ItemFrame itf = (ItemFrame) topLoc.getWorld().spawnEntity(topLoc.clone().add(x, 0, -1), EntityType.ARMOR_STAND);
+			itf.setFacingDirection(BlockFace.NORTH);
+			itf.setItem(createNamedMapWithURL(g.getIconUrl(), g.getName(), topLoc.getWorld()));
+			
+			Block b = topLoc.clone().add(x, -1, -1).getBlock();
+			b.setType(Material.DARK_OAK_BUTTON);
+			Directional directional = (Directional) b.getBlockData();
+			directional.setFacing(BlockFace.NORTH);
+			b.setBlockData(directional);
 		}
+		p.setGameMode(GameMode.SPECTATOR);
+		p.teleport(topLoc.clone().add(0, 1, 0));
+	}
+	
+	public ItemStack createMapWithURL(String url, World world) {
+		ItemStack it = new ItemStack(Material.FILLED_MAP);
+		MapMeta mm = (MapMeta) it.getItemMeta();
+		mm.setMapView(Bukkit.createMap(world));
+		mm.getMapView().addRenderer(new DiscordMapRenderer(url, discordMC));
+		it.setItemMeta(mm);
+		return it;
+	}
+	
+	public ItemStack createNamedMapWithURL(String url, String name, World world) {
+		ItemStack it = new ItemStack(Material.FILLED_MAP);
+		MapMeta mm = (MapMeta) it.getItemMeta();
+		mm.setDisplayName(name);
+		mm.setMapView(Bukkit.createMap(world));
+		mm.getMapView().addRenderer(new DiscordMapRenderer(url, discordMC));
+		it.setItemMeta(mm);
+		return it;
 	}
 	
 	public World getWorld() {
@@ -78,6 +120,16 @@ public class DiscordMCUtils implements EventListener{
 	public JDA getClient() {
 		return jdaClient;
 	}
+	
+	public void spawnHologram(Location l, String name) {
+        ArmorStand as = (ArmorStand) l.getWorld().spawnEntity(l, EntityType.ARMOR_STAND);
+        as.setCustomName(name);
+        as.setCustomNameVisible(true);
+        as.setGravity(false);
+        as.setVisible(false);
+        as.setInvulnerable(true);
+        as.setCollidable(false);
+    }
 
 	@Override
 	public void onEvent(Event event) {
