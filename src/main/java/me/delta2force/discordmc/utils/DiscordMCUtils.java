@@ -1,5 +1,6 @@
 package me.delta2force.discordmc.utils;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -46,7 +47,15 @@ public class DiscordMCUtils implements EventListener{
 			this.jdaClient = new JDABuilder(discordMC.getConfig().getString("botToken")).build();
 			this.jdaClient.awaitReady();
 			this.jdaClient.addEventListener(this);
-			this.jdaClient.getUserById(discordMC.getConfig().getString("yourDiscordID")).openPrivateChannel().queue(s -> s.sendMessage("Hi! I'm the Discord in Minecraft plugin. Send me an invitation link and I will join!"));
+			discordMC.reloadConfig();
+			for(String s : discordMC.getConfig().getStringList("inviteLinks")) {
+				if(!s.isEmpty()) {
+					Invite.resolve(this.jdaClient, s).complete();
+				}
+			}
+			discordMC.getConfig().set("inviteLinks", Arrays.asList(""));
+			discordMC.saveConfig();
+			discordMC.reloadConfig();
 		} catch (LoginException | InterruptedException e) {
 			Bukkit.broadcastMessage(getPrefix() + ChatColor.RED + "There was an error while logging in using DiscordMC!"
 					+ "Tell the admins to look in the console! I'm outta here.");
