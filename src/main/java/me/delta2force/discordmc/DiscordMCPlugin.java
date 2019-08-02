@@ -25,7 +25,9 @@ public class DiscordMCPlugin extends JavaPlugin{
 			if(!p.isOp()) {
 				p.sendMessage(ChatColor.RED + "This can only be executed as an OP!");
 			}else {
-				
+				if(command.getName().equals("discord")) {
+					
+				}
 			}
 		}else {
 			sender.sendMessage(ChatColor.RED + "This can only be executed as a player!");
