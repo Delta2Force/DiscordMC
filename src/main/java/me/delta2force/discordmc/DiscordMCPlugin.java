@@ -17,6 +17,13 @@ public class DiscordMCPlugin extends JavaPlugin{
 		this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
 		utils = new DiscordMCUtils(this);
 		saveDefaultConfig();
+		reloadConfig();
+		utils.getClient().getUserById(this.getConfig().getLong("yourDiscordID")).openPrivateChannel().complete().sendMessage("Hi! I'm the Discord in Minecraft plugin. Send me an invitation link and I will join!");
+	}
+	
+	@Override
+	public void onDisable() {
+		
 	}
 	
 	@Override

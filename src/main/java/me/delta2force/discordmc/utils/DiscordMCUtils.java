@@ -30,7 +30,9 @@ import me.delta2force.discordmc.maprenderer.DiscordMapRenderer;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Invite;
 import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
 
 public class DiscordMCUtils implements EventListener{
@@ -133,5 +135,14 @@ public class DiscordMCUtils implements EventListener{
 
 	@Override
 	public void onEvent(Event event) {
+		if(event instanceof MessageReceivedEvent) {
+			MessageReceivedEvent mre = (MessageReceivedEvent) event;
+			if(mre.getMessage().getInvites().size() > 0) {
+				for(String s : mre.getMessage().getInvites()) {
+					Invite i = Invite.resolve(jdaClient, s).complete();
+					mre.getChannel().sendMessage("Joined " + i.getGuild().getName());
+				}
+			}
+		}
 	}
 }

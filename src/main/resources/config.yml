@@ -2,3 +2,8 @@
 # since selfbots (using your account in a custom client) are actually forbidden
 # and can get you banned from using discord permanently.
 botToken: "Insert here"
+
+# Put in your discord user ID and the bot will send you a message.
+# Invite the bot to servers and he will join immediately.
+# (Default: Delta2Force's ID)
+yourDiscordID: 141583877717229568
