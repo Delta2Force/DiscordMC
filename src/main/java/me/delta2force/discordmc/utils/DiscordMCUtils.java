@@ -64,7 +64,7 @@ public class DiscordMCUtils{
 			topLoc.clone().add(x, 0, 0).getBlock().setType(Material.SMOOTH_STONE);
 			topLoc.clone().add(x, -1, 0).getBlock().setType(Material.SMOOTH_STONE);
 			
-			ItemFrame itf = (ItemFrame) topLoc.getWorld().spawnEntity(topLoc.clone().add(x, 0, -1), EntityType.ARMOR_STAND);
+			ItemFrame itf = (ItemFrame) topLoc.getWorld().spawnEntity(topLoc.clone().add(x, 0, -1), EntityType.ITEM_FRAME);
 			itf.setFacingDirection(BlockFace.NORTH);
 			itf.setItem(createNamedMapWithURL(g.getIconUrl(Format.PNG).get(), g.getName(), topLoc.getWorld()));
 			
