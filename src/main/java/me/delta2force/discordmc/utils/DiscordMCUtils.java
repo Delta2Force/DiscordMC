@@ -44,8 +44,9 @@ public class DiscordMCUtils implements EventListener{
 		this.discordMC = discordMC;
 		try {
 			this.jdaClient = new JDABuilder(discordMC.getConfig().getString("botToken")).build();
+			this.jdaClient.awaitReady();
 			this.jdaClient.addEventListener(this);
-		} catch (LoginException e) {
+		} catch (LoginException | InterruptedException e) {
 			Bukkit.broadcastMessage(getPrefix() + ChatColor.RED + "There was an error while logging in using DiscordMC!"
 					+ "Tell the admins to look in the console! I'm outta here.");
 			Bukkit.getServer().getPluginManager().disablePlugin(discordMC);
