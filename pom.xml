@@ -86,9 +86,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-    		<groupId>com.discord4j</groupId>
-    		<artifactId>discord4j-core</artifactId>
-    		<version>3.0.7</version>
-  		</dependency>
+			<groupId>net.dv8tion</groupId>
+			<artifactId>JDA</artifactId>
+			<version>3.8.3_460</version>
+		</dependency>
 	</dependencies>
 </project>
