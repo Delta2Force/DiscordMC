@@ -26,42 +26,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
 
+import discord4j.core.DiscordClient;
+import discord4j.core.DiscordClientBuilder;
+import discord4j.core.object.Invite;
+import discord4j.core.object.entity.Guild;
+import discord4j.core.object.util.Image.Format;
 import me.delta2force.discordmc.DiscordMCPlugin;
 import me.delta2force.discordmc.maprenderer.DiscordMapRenderer;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Invite;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.EventListener;
+import reactor.core.publisher.Flux;
 
-public class DiscordMCUtils implements EventListener{
+public class DiscordMCUtils{
 	private DiscordMCPlugin discordMC;
-	private JDA jdaClient;
+	private DiscordClient discordClient;
 	public HashMap<UUID, DiscordSession> sessions = new HashMap<UUID, DiscordSession>();
 	
 	public DiscordMCUtils(DiscordMCPlugin discordMC) {
 		this.discordMC = discordMC;
-		try {
-			this.jdaClient = new JDABuilder(discordMC.getConfig().getString("botToken")).build();
-			this.jdaClient.awaitReady();
-			this.jdaClient.addEventListener(this);
-			discordMC.reloadConfig();
-			for(String s : discordMC.getConfig().getStringList("inviteLinks")) {
-				if(!s.isEmpty()) {
-					Invite.resolve(this.jdaClient, s).complete();
-				}
-			}
-			discordMC.getConfig().set("inviteLinks", Arrays.asList(""));
-			discordMC.saveConfig();
-			discordMC.reloadConfig();
-		} catch (LoginException | InterruptedException e) {
-			Bukkit.broadcastMessage(getPrefix() + ChatColor.RED + "There was an error while logging in using DiscordMC!"
-					+ "Tell the admins to look in the console! I'm outta here.");
-			Bukkit.getServer().getPluginManager().disablePlugin(discordMC);
-			e.printStackTrace();
-		}
+			this.discordClient = new DiscordClientBuilder(discordMC.getConfig().getString("botToken")).build();
+			this.discordClient.login();
 	}
 	
 	public DiscordSession getPlayerSession(Player p) {
@@ -75,7 +57,7 @@ public class DiscordMCUtils implements EventListener{
 	}
 	
 	public void setupInterface(Player p) {
-		List<Guild> guilds = jdaClient.getGuilds();
+		List<Guild> guilds = discordClient.getGuilds().collectList().block();
 		Location topLoc = randomTopCoordinate();
 		int x = 0;
 		for(Guild g : guilds) {
@@ -84,7 +66,7 @@ public class DiscordMCUtils implements EventListener{
 			
 			ItemFrame itf = (ItemFrame) topLoc.getWorld().spawnEntity(topLoc.clone().add(x, 0, -1), EntityType.ARMOR_STAND);
 			itf.setFacingDirection(BlockFace.NORTH);
-			itf.setItem(createNamedMapWithURL(g.getIconUrl(), g.getName(), topLoc.getWorld()));
+			itf.setItem(createNamedMapWithURL(g.getIconUrl(Format.PNG).get(), g.getName(), topLoc.getWorld()));
 			
 			Block b = topLoc.clone().add(x, -1, -1).getBlock();
 			b.setType(Material.DARK_OAK_BUTTON);
@@ -130,8 +112,8 @@ public class DiscordMCUtils implements EventListener{
 		return ChatColor.BLUE + "[DiscordMC] ";
 	}
 	
-	public JDA getClient() {
-		return jdaClient;
+	public DiscordClient getClient() {
+		return discordClient;
 	}
 	
 	public void spawnHologram(Location l, String name) {
@@ -143,17 +125,4 @@ public class DiscordMCUtils implements EventListener{
         as.setInvulnerable(true);
         as.setCollidable(false);
     }
-
-	@Override
-	public void onEvent(Event event) {
-		if(event instanceof MessageReceivedEvent) {
-			MessageReceivedEvent mre = (MessageReceivedEvent) event;
-			if(mre.getMessage().getInvites().size() > 0) {
-				for(String s : mre.getMessage().getInvites()) {
-					Invite i = Invite.resolve(jdaClient, s).complete();
-					mre.getChannel().sendMessage("Joined " + i.getGuild().getName());
-				}
-			}
-		}
-	}
 }

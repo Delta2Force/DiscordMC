@@ -2,7 +2,3 @@
 # since selfbots (using your account in a custom client) are actually forbidden
 # and can get you banned from using discord permanently.
 botToken: "Insert here"
-
-# Put in invitation codes to discord servers
-# Default: r/DiscordApp discord
-inviteLinks: ["bvXcZta"]
