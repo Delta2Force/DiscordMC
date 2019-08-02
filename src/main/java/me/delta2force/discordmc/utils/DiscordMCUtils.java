@@ -46,7 +46,7 @@ public class DiscordMCUtils implements EventListener{
 			this.jdaClient = new JDABuilder(discordMC.getConfig().getString("botToken")).build();
 			this.jdaClient.awaitReady();
 			this.jdaClient.addEventListener(this);
-			this.jdaClient.getUserById(discordMC.getConfig().getLong("yourDiscordID")).openPrivateChannel().complete().sendMessage("Hi! I'm the Discord in Minecraft plugin. Send me an invitation link and I will join!");
+			this.jdaClient.getUserById(discordMC.getConfig().getString("yourDiscordID")).openPrivateChannel().complete().sendMessage("Hi! I'm the Discord in Minecraft plugin. Send me an invitation link and I will join!");
 		} catch (LoginException | InterruptedException e) {
 			Bukkit.broadcastMessage(getPrefix() + ChatColor.RED + "There was an error while logging in using DiscordMC!"
 					+ "Tell the admins to look in the console! I'm outta here.");
