@@ -79,6 +79,7 @@ public class DiscordMCUtils implements EventListener{
 		for(Guild g : guilds) {
 			topLoc.clone().add(x, 0, 0).getBlock().setType(Material.SMOOTH_STONE);
 			topLoc.clone().add(x, -1, 0).getBlock().setType(Material.SMOOTH_STONE);
+			topLoc.clone().add(x, -1, -1).getBlock().setType(Material.SMOOTH_STONE);
 			
 			ItemFrame itf = (ItemFrame) topLoc.getWorld().spawnEntity(topLoc.clone().add(x, 0, -1), EntityType.ARMOR_STAND);
 			itf.setFacingDirection(BlockFace.NORTH);
@@ -96,7 +97,7 @@ public class DiscordMCUtils implements EventListener{
 			directional.setFacing(BlockFace.NORTH);
 			b.setBlockData(directional);
 		}
-		p.setGameMode(GameMode.SPECTATOR);
+		p.setGameMode(GameMode.ADVENTURE);
 		p.teleport(topLoc.clone().add(0, 1, 0));
 	}
 	
