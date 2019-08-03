@@ -1,4 +1,4 @@
-package me.delta2force.discordmc.utils;
+package me.delta2force.discordmc.interaction;
 
 public class Interaction {
 	public final InteractiveEnum interactionType;

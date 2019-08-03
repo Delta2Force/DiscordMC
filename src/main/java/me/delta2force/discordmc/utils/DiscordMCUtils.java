@@ -27,8 +27,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 
 import me.delta2force.discordmc.DiscordMCPlugin;
+import me.delta2force.discordmc.interaction.Interaction;
+import me.delta2force.discordmc.interaction.Interaction.InteractiveEnum;
 import me.delta2force.discordmc.maprenderer.DiscordMapRenderer;
-import me.delta2force.discordmc.utils.Interaction.InteractiveEnum;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Guild;

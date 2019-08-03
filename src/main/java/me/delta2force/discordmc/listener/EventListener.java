@@ -5,9 +5,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import me.delta2force.discordmc.DiscordMCPlugin;
+import me.delta2force.discordmc.interaction.Interaction;
+import me.delta2force.discordmc.interaction.Interaction.InteractiveEnum;
 import me.delta2force.discordmc.utils.IntVector;
-import me.delta2force.discordmc.utils.Interaction;
-import me.delta2force.discordmc.utils.Interaction.InteractiveEnum;
 
 public class EventListener implements Listener{
 	private DiscordMCPlugin discordMC;
