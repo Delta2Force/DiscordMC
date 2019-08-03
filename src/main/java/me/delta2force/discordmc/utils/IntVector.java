@@ -18,4 +18,21 @@ public class IntVector {
 		this.y = loc.getBlockY();
 		this.z = loc.getBlockZ();
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof IntVector) {
+			IntVector iv = (IntVector) obj;
+			if(iv.x == x && iv.y == y && iv.z == z) {
+				return true;
+			}
+		}
+		if(obj instanceof Location) {
+			Location iv = (Location) obj;
+			if(iv.getBlockX() == x && iv.getBlockY() == y && iv.getBlockZ() == z) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

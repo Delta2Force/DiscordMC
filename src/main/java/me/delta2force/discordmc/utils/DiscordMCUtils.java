@@ -1,6 +1,5 @@
 package me.delta2force.discordmc.utils;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -28,20 +27,19 @@ import org.bukkit.inventory.meta.MapMeta;
 
 import me.delta2force.discordmc.DiscordMCPlugin;
 import me.delta2force.discordmc.maprenderer.DiscordMapRenderer;
-import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Invite;
-import net.dv8tion.jda.core.entities.impl.InviteImpl;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
 
-public class DiscordMCUtils implements EventListener{
+public class DiscordMCUtils implements EventListener {
 	private DiscordMCPlugin discordMC;
 	private JDA jdaClient;
 	public HashMap<UUID, DiscordSession> sessions = new HashMap<UUID, DiscordSession>();
+	
 	
 	public DiscordMCUtils(DiscordMCPlugin discordMC) {
 		this.discordMC = discordMC;

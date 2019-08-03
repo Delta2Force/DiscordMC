@@ -22,7 +22,7 @@ public class DiscordMCPlugin extends JavaPlugin{
 	
 	@Override
 	public void onDisable() {
-		
+		utils.getClient().shutdownNow();
 	}
 	
 	@Override
@@ -30,7 +30,7 @@ public class DiscordMCPlugin extends JavaPlugin{
 		if(sender instanceof Player) {
 			Player p = (Player) sender;
 			if(!p.isOp()) {
-				p.sendMessage(ChatColor.RED + "This can only be executed as an OP!");
+				p.sendMessage(ChatColor.RED  + "This can only be executed as an OP!");
 			}else {
 				if(command.getName().equals("discord")) {
 					utils.addPlayer(p);

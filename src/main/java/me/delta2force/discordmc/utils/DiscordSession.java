@@ -7,18 +7,18 @@ import org.bukkit.entity.Player;
 
 public class DiscordSession {
 	private UUID uuid;
-	private SessionState state;
+	//private SessionState state;
 	
 	public DiscordSession(UUID uuid) {
 		this.uuid = uuid;
-		this.state = SessionState.SERVER_WALL;
+		//this.state = SessionState.SERVER_WALL;
 	}
 	
 	public Player getPlayer() {
 		return Bukkit.getPlayer(uuid);
 	}
 	
-	public SessionState getState() {
+	/*public SessionState getState() {
 		return state;
 	}
 	
@@ -28,5 +28,5 @@ public class DiscordSession {
 	
 	public static enum SessionState{
 		SERVER_WALL, CHAT
-	}
+	}*/
 }
