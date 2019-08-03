@@ -28,6 +28,7 @@ import org.bukkit.inventory.meta.MapMeta;
 
 import me.delta2force.discordmc.DiscordMCPlugin;
 import me.delta2force.discordmc.maprenderer.DiscordMapRenderer;
+import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -49,7 +50,7 @@ public class DiscordMCUtils implements EventListener{
 			this.jdaClient.awaitReady();
 			this.jdaClient.addEventListener(this);
 		} catch (LoginException | InterruptedException e) {
-			Bukkit.broadcastMessage(getPrefix() + ChatColor.RED + "There was an error while logging in using DiscordMC!"
+			Bukkit.broadcastMessage(getPrefix() + ChatColor.RED + "There was an error while logging in using DiscordMC! "
 					+ "Tell the admins to look in the console! I'm outta here.");
 			Bukkit.getServer().getPluginManager().disablePlugin(discordMC);
 			e.printStackTrace();
@@ -61,9 +62,14 @@ public class DiscordMCUtils implements EventListener{
 	}
 	
 	public void addPlayer(Player p) {
-		sessions.put(p.getUniqueId(), new DiscordSession(p.getUniqueId()));
-		p.sendMessage(getPrefix() + ChatColor.YELLOW + "The interface is being set up...");
-		setupInterface(p);
+		if(sessions.containsKey(p.getUniqueId())) {
+			p.sendMessage(getPrefix() + ChatColor.RED + "You are already using Discord you dumb dumb!");
+		}else {
+			sessions.put(p.getUniqueId(), new DiscordSession(p.getUniqueId()));
+			p.sendMessage(getPrefix() + ChatColor.YELLOW + "The interface is being set up...");
+			setupInterface(p);
+			p.sendMessage(getPrefix() + ChatColor.GREEN + "Please select the server to use!");
+		}
 	}
 	
 	public void setupInterface(Player p) {
@@ -76,7 +82,13 @@ public class DiscordMCUtils implements EventListener{
 			
 			ItemFrame itf = (ItemFrame) topLoc.getWorld().spawnEntity(topLoc.clone().add(x, 0, -1), EntityType.ARMOR_STAND);
 			itf.setFacingDirection(BlockFace.NORTH);
-			itf.setItem(createNamedMapWithURL(g.getIconUrl(), g.getName(), topLoc.getWorld()));
+			String icon = g.getIconUrl();
+			if(icon != null) {
+				itf.setItem(createNamedMapWithURL(icon, g.getName(), topLoc.getWorld()));
+			}else {
+				//Use "No server icon" image
+				itf.setItem(createNamedMapWithURL("https://i.imgur.com/rkRZl9a.png", g.getName(), topLoc.getWorld()));
+			}
 			
 			Block b = topLoc.clone().add(x, -1, -1).getBlock();
 			b.setType(Material.DARK_OAK_BUTTON);
@@ -107,7 +119,7 @@ public class DiscordMCUtils implements EventListener{
 		return it;
 	}
 	
-	public World getWorld() {
+	public World getDiscordWorld() {
 		WorldCreator wc = new WorldCreator("discord");
 		wc.type(WorldType.FLAT);
 		return wc.createWorld();
@@ -115,7 +127,7 @@ public class DiscordMCUtils implements EventListener{
 	
 	public Location randomTopCoordinate() {
 		Random r = new Random();
-		return new Location(getWorld(), r.nextInt(2000000)-1000000, 255, r.nextInt(2000000)-1000000);
+		return new Location(getDiscordWorld(), r.nextInt(2000000)-1000000, 255, r.nextInt(2000000)-1000000);
 	}
 	
 	public String getPrefix() {
