@@ -23,10 +23,12 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 
 import me.delta2force.discordmc.DiscordMCPlugin;
 import me.delta2force.discordmc.maprenderer.DiscordMapRenderer;
+import me.delta2force.discordmc.utils.Interaction.InteractiveEnum;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -39,7 +41,7 @@ public class DiscordMCUtils implements EventListener {
 	private DiscordMCPlugin discordMC;
 	private JDA jdaClient;
 	public HashMap<UUID, DiscordSession> sessions = new HashMap<UUID, DiscordSession>();
-	
+	public HashMap<IntVector, Interaction> interactions = new HashMap<>();
 	
 	public DiscordMCUtils(DiscordMCPlugin discordMC) {
 		this.discordMC = discordMC;
@@ -96,6 +98,7 @@ public class DiscordMCUtils implements EventListener {
 			Directional directional = (Directional) b.getBlockData();
 			directional.setFacing(BlockFace.NORTH);
 			b.setBlockData(directional);
+			interactions.put(new IntVector(b.getLocation()), new Interaction(InteractiveEnum.JOIN_SERVER, g.getId()));
 		}
 		p.setGameMode(GameMode.ADVENTURE);
 		p.teleport(topLoc.clone().add(0, 1, 0));
@@ -111,12 +114,10 @@ public class DiscordMCUtils implements EventListener {
 	}
 	
 	public ItemStack createNamedMapWithURL(String url, String name, World world) {
-		ItemStack it = new ItemStack(Material.FILLED_MAP);
-		MapMeta mm = (MapMeta) it.getItemMeta();
-		mm.setDisplayName(name);
-		mm.setMapView(Bukkit.createMap(world));
-		mm.getMapView().addRenderer(new DiscordMapRenderer(url, discordMC));
-		it.setItemMeta(mm);
+		ItemStack it = createMapWithURL(url, world);
+		ItemMeta im = it.getItemMeta();
+		im.setDisplayName(name);
+		it.setItemMeta(im);
 		return it;
 	}
 	
@@ -148,17 +149,15 @@ public class DiscordMCUtils implements EventListener {
         as.setInvulnerable(true);
         as.setCollidable(false);
     }
+	
+	public void executeInteraction(Interaction i) {
+		
+	}
 
 	@Override
 	public void onEvent(Event event) {
 		if(event instanceof MessageReceivedEvent) {
 			MessageReceivedEvent mre = (MessageReceivedEvent) event;
-			if(mre.getMessage().getInvites().size() > 0) {
-				for(String s : mre.getMessage().getInvites()) {
-					Invite i = Invite.resolve(jdaClient, s).complete();
-					mre.getChannel().sendMessage("Joined " + i.getGuild().getName());
-				}
-			}
 		}
 	}
 }

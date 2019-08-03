@@ -17,7 +17,7 @@ public class Interaction {
 		return value;
 	}
 	
-	static enum InteractiveEnum{
+	public static enum InteractiveEnum{
 		JOIN_SERVER, CHANGE_CHANNEL
 	}
 }
