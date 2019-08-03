@@ -79,7 +79,9 @@ public class DiscordMCUtils implements EventListener{
 		for(Guild g : guilds) {
 			topLoc.clone().add(x, 0, 0).getBlock().setType(Material.SMOOTH_STONE);
 			topLoc.clone().add(x, -1, 0).getBlock().setType(Material.SMOOTH_STONE);
-			topLoc.clone().add(x, -2, -1).getBlock().setType(Material.SMOOTH_STONE);
+			topLoc.clone().add(x, -2, -1).getBlock().setType(Material.STONE_BRICKS);
+			topLoc.clone().add(x, -2, -2).getBlock().setType(Material.STONE_BRICKS);
+			topLoc.clone().add(x, -2, -3).getBlock().setType(Material.STONE_BRICKS);
 			
 			ItemFrame itf = (ItemFrame) topLoc.getWorld().spawnEntity(topLoc.clone().add(x, 0, -1), EntityType.ITEM_FRAME);
 			itf.setFacingDirection(BlockFace.NORTH);
