@@ -20,7 +20,7 @@ public class EventListener implements Listener{
 	public void onInteract(PlayerInteractEvent event) {
 		if(discordMC.getUtils().interactions.containsKey(new IntVector(event.getClickedBlock().getLocation()))) {
 			Interaction i = discordMC.getUtils().interactions.get(new IntVector(event.getClickedBlock().getLocation()));
-			discordMC.getUtils().executeInteraction(i);
+			discordMC.getUtils().executeInteraction(i, event.getPlayer());
 		}
 	}
 }

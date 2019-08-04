@@ -2,6 +2,7 @@ package me.delta2force.discordmc.utils;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -27,6 +28,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 
 import me.delta2force.discordmc.DiscordMCPlugin;
+import me.delta2force.discordmc.chat.Chat;
 import me.delta2force.discordmc.interaction.Interaction;
 import me.delta2force.discordmc.interaction.Interaction.InteractiveEnum;
 import me.delta2force.discordmc.maprenderer.DiscordMapRenderer;
@@ -41,8 +43,9 @@ import net.dv8tion.jda.core.hooks.EventListener;
 public class DiscordMCUtils implements EventListener {
 	private DiscordMCPlugin discordMC;
 	private JDA jdaClient;
-	public HashMap<UUID, DiscordSession> sessions = new HashMap<UUID, DiscordSession>();
-	public HashMap<IntVector, Interaction> interactions = new HashMap<>();
+	public Map<UUID, DiscordSession> sessions = new HashMap<UUID, DiscordSession>();
+	public Map<IntVector, Interaction> interactions = new HashMap<>();
+	public Map<UUID, Chat> chats = new HashMap<>();
 	
 	public DiscordMCUtils(DiscordMCPlugin discordMC) {
 		this.discordMC = discordMC;
@@ -52,7 +55,7 @@ public class DiscordMCUtils implements EventListener {
 			this.jdaClient.addEventListener(this);
 		} catch (LoginException | InterruptedException e) {
 			Bukkit.broadcastMessage(getPrefix() + ChatColor.RED + "There was an error while logging in using DiscordMC! "
-					+ "Tell the admins to look in the console! I'm outta here.");
+					+ "Tell the admins to look in the console and create an issue on the GitHub page! I'm outta here.");
 			Bukkit.getServer().getPluginManager().disablePlugin(discordMC);
 			e.printStackTrace();
 		}
@@ -141,7 +144,7 @@ public class DiscordMCUtils implements EventListener {
 		return jdaClient;
 	}
 	
-	public void spawnHologram(Location l, String name) {
+	public ArmorStand spawnHologram(Location l, String name) {
         ArmorStand as = (ArmorStand) l.getWorld().spawnEntity(l, EntityType.ARMOR_STAND);
         as.setCustomName(name);
         as.setCustomNameVisible(true);
@@ -149,10 +152,13 @@ public class DiscordMCUtils implements EventListener {
         as.setVisible(false);
         as.setInvulnerable(true);
         as.setCollidable(false);
+        return as;
     }
 	
-	public void executeInteraction(Interaction i) {
-		
+	public void executeInteraction(Interaction i, Player executor) {
+		if(i.interactionType == InteractiveEnum.JOIN_SERVER) {
+			chats.put(executor.getUniqueId(), new Chat(randomTopCoordinate(), executor, this));
+		}
 	}
 
 	@Override
