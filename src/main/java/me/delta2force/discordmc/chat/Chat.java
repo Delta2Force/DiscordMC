@@ -29,7 +29,7 @@ public class Chat {
 	public Player owner;
 	public String serverId;
 	private ArrayList<ItemFrame> itemFrames;
-	private ArrayList<Sign> signs;
+	private ArrayList<Block> signs;
 	private ArmorStand titleArmorStand;
 	
 	public Chat(Location topRight, Player owner, DiscordMCUtils utils, String serverId) {
@@ -69,8 +69,8 @@ public class Chat {
 					itf.remove();
 				}
 				itemFrames.clear();
-				for(Sign s : signs) {
-					s.setType(Material.AIR);
+				for(Block b : signs) {
+					b.setType(Material.AIR);
 				}
 				signs.clear();
 				if(titleArmorStand != null) {
@@ -127,7 +127,7 @@ public class Chat {
 		Directional directional = (Directional) b.getBlockData();
 		directional.setFacing(BlockFace.NORTH);
 		b.setBlockData(directional);
-		signs.add(currentSign);
+		signs.add(b);
 		return currentSign;
 	}
 	
