@@ -44,7 +44,7 @@ public class Chat {
 	}
 	
 	public void addEntry(ChatEntry entry) {
-		if(entries.size() > 6) {
+		if(entries.size() > 5) {
 			entries.remove(0);
 		}
 		entries.add(entry);
@@ -102,7 +102,7 @@ public class Chat {
 							int signIndex = 0;
 							Sign currentSign = createWallSign(currentSignLoc);
 							for(String s : lines) {
-								if(signIndex == 3) {
+								if(signIndex == 4) {
 									signIndex = 0;
 									currentSignLoc.add(-1, 0, 0);
 									currentSign = createWallSign(currentSignLoc);
