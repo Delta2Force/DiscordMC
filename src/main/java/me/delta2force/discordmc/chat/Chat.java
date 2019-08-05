@@ -32,7 +32,6 @@ public class Chat {
 		this.owner = owner;
 		this.serverId = serverId;
 		build();
-		//utils.getClient().getGuildById(serverId)
 	}
 	
 	public void addEntry(ChatEntry entry) {
@@ -40,6 +39,7 @@ public class Chat {
 			entries.remove(0);
 		}
 		entries.add(entry);
+		update();
 	}
 	
 	public void changeChannel(String newChannel) {
