@@ -54,21 +54,20 @@ public class Chat {
 	}
 	
 	public void update() {
-		if(titleArmorStand != null) {
-			titleArmorStand.remove();
-		}
-		titleArmorStand = spawnHologram(topRight.clone().add(4, 1, 0), utils.getClient().getTextChannelById(channelId).getName());
-		for(ItemFrame itf : itemFrames) {
-			itf.remove();
-		}
-		for(Sign s : signs) {
-			s.setType(Material.AIR);
-		}
-		
 		Bukkit.getScheduler().runTask(utils.getDiscordMC(), new Runnable() {
 			
 			@Override
 			public void run() {
+				for(ItemFrame itf : itemFrames) {
+					itf.remove();
+				}
+				for(Sign s : signs) {
+					s.setType(Material.AIR);
+				}
+				if(titleArmorStand != null) {
+					titleArmorStand.remove();
+				}
+				titleArmorStand = spawnHologram(topRight.clone().add(4, 1, 0), utils.getClient().getTextChannelById(channelId).getName());
 				Location topLeft = topRight.clone().add(7, 0, -1);
 				for(ChatEntry entry : entries) {
 					Location loc = topLeft.clone().add(0, -1, 0);
