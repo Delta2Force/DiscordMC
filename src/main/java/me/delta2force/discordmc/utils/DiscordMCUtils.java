@@ -36,6 +36,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Invite;
+import net.dv8tion.jda.core.entities.MessageEmbed.ImageInfo;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
@@ -90,12 +91,7 @@ public class DiscordMCUtils implements EventListener {
 			ItemFrame itf = (ItemFrame) topLoc.getWorld().spawnEntity(topLoc.clone().add(x, 0, -1), EntityType.ITEM_FRAME);
 			itf.setFacingDirection(BlockFace.NORTH);
 			String icon = g.getIconUrl();
-			if(icon != null) {
-				itf.setItem(createNamedMapWithURL(icon, g.getName(), topLoc.getWorld()));
-			}else {
-				//Use "No server icon" image
-				itf.setItem(createNamedMapWithURL("https://i.imgur.com/rkRZl9a.png", g.getName(), topLoc.getWorld()));
-			}
+			itf.setItem(createNamedMapWithURL(icon, g.getName(), topLoc.getWorld()));
 			
 			Block b = topLoc.clone().add(x, -1, -1).getBlock();
 			b.setType(Material.DARK_OAK_BUTTON);
@@ -118,6 +114,9 @@ public class DiscordMCUtils implements EventListener {
 	}
 	
 	public ItemStack createNamedMapWithURL(String url, String name, World world) {
+		if(url == null) {
+			url = "https://i.imgur.com/rkRZl9a.png";
+		}
 		ItemStack it = createMapWithURL(url, world);
 		ItemMeta im = it.getItemMeta();
 		im.setDisplayName(name);
@@ -157,7 +156,7 @@ public class DiscordMCUtils implements EventListener {
 	
 	public void executeInteraction(Interaction i, Player executor) {
 		if(i.interactionType == InteractiveEnum.JOIN_SERVER) {
-			chats.put(executor.getUniqueId(), new Chat(randomTopCoordinate(), executor, this));
+			chats.put(executor.getUniqueId(), new Chat(randomTopCoordinate(), executor, this, i.value));
 		}
 	}
 
@@ -165,6 +164,20 @@ public class DiscordMCUtils implements EventListener {
 	public void onEvent(Event event) {
 		if(event instanceof MessageReceivedEvent) {
 			MessageReceivedEvent mre = (MessageReceivedEvent) event;
+			for(Chat c : chats.values()) {
+				if(c.serverId == mre.getGuild().getId() && c.channelId == mre.getChannel().getId()) {
+					if(mre.getMessage().getEmbeds().size() > 0) {
+						ImageInfo ii = mre.getMessage().getEmbeds().get(0).getImage();
+						if(ii != null) {
+							c.addEntry(new Chat.ChatEntry(ii.getUrl(), mre.getAuthor().getId(), true));
+						}else {
+							c.addEntry(new Chat.ChatEntry(mre.getMessage().getContentRaw(), mre.getAuthor().getId(), false));
+						}
+					}else {
+						c.addEntry(new Chat.ChatEntry(mre.getMessage().getContentRaw(), mre.getAuthor().getId(), false));
+					}
+				}
+			}
 		}
 	}
 }
