@@ -1,4 +1,4 @@
-# DiscordMC - Use Discord in Minecraft [![Build Status](https://travis-ci.org/Delta2Force/DiscordMC.svg?branch=master)](https://travis-ci.org/Delta2Force/redditbrowser)
+# DiscordMC - Use Discord in Minecraft [![Build Status](https://travis-ci.org/Delta2Force/DiscordMC.svg?branch=master)](https://travis-ci.org/Delta2Force/DiscordMC)
 
 ## Installation
 Download the latest version from the releases tab and put it in your plugins tab.
