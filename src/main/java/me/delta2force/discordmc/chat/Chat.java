@@ -108,6 +108,7 @@ public class Chat {
 			loc = new Location(topRight.getWorld(), x, topRight.getBlockY()-8, topRight.getZ()-3);
 			loc.getBlock().setType(Material.GRAY_WOOL);
 		}
+		owner.teleport(topRight.clone().add(0,1,0));
 	}
 	
 	public ArmorStand spawnHologram(Location l, String name) {
