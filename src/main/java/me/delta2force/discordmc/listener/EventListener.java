@@ -41,7 +41,7 @@ public class EventListener implements Listener{
 				String channelName = event.getMessage().toLowerCase().split("discordmc: ")[1];
 				discordMC.getUtils().chats.get(p.getUniqueId()).changeChannel(discordMC.getUtils().getClient().getGuildById(c.serverId).getTextChannelsByName(channelName, true).get(0).getId());
 			}
-			discordMC.getUtils().getClient().getTextChannelById(c.channelId).sendMessage(event.getMessage());
+			discordMC.getUtils().getClient().getTextChannelById(c.channelId).sendMessage(event.getMessage()).complete();
 			c.addEntry(new ChatEntry(event.getMessage(), discordMC.getUtils().getClient().getSelfUser().getId(), false));
 		}
 	}
