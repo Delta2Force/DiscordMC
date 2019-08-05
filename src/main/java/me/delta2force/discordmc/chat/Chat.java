@@ -3,6 +3,7 @@ package me.delta2force.discordmc.chat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -64,39 +65,45 @@ public class Chat {
 			s.setType(Material.AIR);
 		}
 		
-		Location topLeft = topRight.clone().add(7, 0, -1);
-		for(ChatEntry entry : entries) {
-			Location loc = topLeft.clone().add(0, -1, 0);
-			ItemFrame authorPic = (ItemFrame) topLeft.getWorld().spawnEntity(loc, EntityType.ITEM_FRAME);
-			authorPic.setFacingDirection(BlockFace.NORTH);
-			User author = utils.getClient().getUserById(entry.authorId);
-			authorPic.setItem(utils.createNamedMapWithURL(author.getAvatarUrl(), author.getName(), topLeft.getWorld()));
-			itemFrames.add(authorPic);
+		Bukkit.getScheduler().runTask(utils.getDiscordMC(), new Runnable() {
 			
-			if(entry.isImage) {
-				ItemFrame image = (ItemFrame) topLeft.getWorld().spawnEntity(loc.clone().add(-1, 0, 0), EntityType.ITEM_FRAME);
-				image.setFacingDirection(BlockFace.NORTH);
-				image.setItem(utils.createMapWithURL(entry.message, topLeft.getWorld()));
-				itemFrames.add(image);
-			}else {
-				String[] lines = entry.message.split("(?<=\\G.{15})");
-				Location currentSignLoc = loc.clone().add(-1, 0, 0);
-				int signIndex = 0;
-				Sign currentSign = (Sign) currentSignLoc.getBlock();
-				currentSign.setType(Material.OAK_SIGN);
-				signs.add(currentSign);
-				for(String s : lines) {
-					if(signIndex == 3) {
-						signIndex = 0;
-						currentSignLoc.add(-1, 0, 0);
-						currentSign = (Sign) currentSignLoc.getBlock();
+			@Override
+			public void run() {
+				Location topLeft = topRight.clone().add(7, 0, -1);
+				for(ChatEntry entry : entries) {
+					Location loc = topLeft.clone().add(0, -1, 0);
+					ItemFrame authorPic = (ItemFrame) topLeft.getWorld().spawnEntity(loc, EntityType.ITEM_FRAME);
+					authorPic.setFacingDirection(BlockFace.NORTH);
+					User author = utils.getClient().getUserById(entry.authorId);
+					authorPic.setItem(utils.createNamedMapWithURL(author.getAvatarUrl(), author.getName(), topLeft.getWorld()));
+					itemFrames.add(authorPic);
+					
+					if(entry.isImage) {
+						ItemFrame image = (ItemFrame) topLeft.getWorld().spawnEntity(loc.clone().add(-1, 0, 0), EntityType.ITEM_FRAME);
+						image.setFacingDirection(BlockFace.NORTH);
+						image.setItem(utils.createMapWithURL(entry.message, topLeft.getWorld()));
+						itemFrames.add(image);
+					}else {
+						String[] lines = entry.message.split("(?<=\\G.{15})");
+						Location currentSignLoc = loc.clone().add(-1, 0, 0);
+						int signIndex = 0;
+						Sign currentSign = (Sign) currentSignLoc.getBlock();
 						currentSign.setType(Material.OAK_SIGN);
 						signs.add(currentSign);
+						for(String s : lines) {
+							if(signIndex == 3) {
+								signIndex = 0;
+								currentSignLoc.add(-1, 0, 0);
+								currentSign = (Sign) currentSignLoc.getBlock();
+								currentSign.setType(Material.OAK_SIGN);
+								signs.add(currentSign);
+							}
+							currentSign.setLine(signIndex, s);
+						}
 					}
-					currentSign.setLine(signIndex, s);
 				}
 			}
-		}
+		});
 	}
 	
 	public void build() {

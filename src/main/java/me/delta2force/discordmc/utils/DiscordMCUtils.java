@@ -159,6 +159,10 @@ public class DiscordMCUtils implements EventListener {
 			chats.put(executor.getUniqueId(), new Chat(randomTopCoordinate(), executor, this, i.value));
 		}
 	}
+	
+	public DiscordMCPlugin getDiscordMC() {
+		return discordMC;
+	}
 
 	@Override
 	public void onEvent(Event event) {
