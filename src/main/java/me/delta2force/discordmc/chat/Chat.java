@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import com.google.gson.Gson;
 
 import me.delta2force.discordmc.utils.DiscordMCUtils;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 
 public class Chat {
@@ -41,6 +42,7 @@ public class Chat {
 		this.itemFrames = new ArrayList<>();
 		this.signs = new ArrayList<>();
 		build();
+		update();
 	}
 	
 	public void addEntry(ChatEntry entry) {
@@ -143,6 +145,12 @@ public class Chat {
 			loc.getBlock().setType(Material.GRAY_WOOL);
 			loc = new Location(topRight.getWorld(), x, topRight.getBlockY()-8, topRight.getZ()-3);
 			loc.getBlock().setType(Material.GRAY_WOOL);
+		}
+		
+		double y = 0;
+		for(TextChannel tc : utils.getClient().getGuildById(serverId).getTextChannels()) {
+			spawnHologram(topRight.clone().add(10, (-1)-y, -2), "#"+tc.getName());
+			y-=0.5;
 		}
 		owner.teleport(topRight.clone().add(0,1,0));
 	}
