@@ -9,6 +9,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.Orientable;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
@@ -60,18 +62,21 @@ public class Chat {
 			@Override
 			public void run() {
 				for(ItemFrame itf : itemFrames) {
+					itf.teleport(itf.getLocation().add(0, -100, 0));	
 					itf.remove();
 				}
+				itemFrames.clear();
 				for(Sign s : signs) {
 					s.setType(Material.AIR);
 				}
+				signs.clear();
 				if(titleArmorStand != null) {
 					titleArmorStand.remove();
 				}
 				titleArmorStand = spawnHologram(topRight.clone().add(4, 1, 0), utils.getClient().getTextChannelById(channelId).getName());
 				Location topLeft = topRight.clone().add(7, 0, -1);
 				for(ChatEntry entry : entries) {
-					Location loc = topLeft.clone().add(0, -1, 0);
+					Location loc = topLeft.add(0, -1, 0);
 					ItemFrame authorPic = (ItemFrame) topLeft.getWorld().spawnEntity(loc, EntityType.ITEM_FRAME);
 					authorPic.setFacingDirection(BlockFace.NORTH);
 					User author = utils.getClient().getUserById(entry.authorId);
@@ -89,9 +94,13 @@ public class Chat {
 							Block b = currentSignLoc.getBlock();
 							b.setType(Material.OAK_SIGN);
 							Sign currentSign = (Sign) b.getState();
-							currentSign.setType(Material.OAK_SIGN);
+							currentSign.setType(Material.OAK_WALL_SIGN);
+							Directional directional = (Directional) b.getBlockData();
+							directional.setFacing(BlockFace.NORTH);
+							b.setBlockData(directional);
 							signs.add(currentSign);
 							currentSign.setLine(0, entry.message);
+							currentSign.update();
 						}else{
 							String[] lines = entry.message.split("(?<=\\G.{15})");
 							Location currentSignLoc = loc.clone().add(-1, 0, 0);
@@ -99,7 +108,10 @@ public class Chat {
 							Block b = currentSignLoc.getBlock();
 							b.setType(Material.OAK_SIGN);
 							Sign currentSign = (Sign) b.getState();
-							currentSign.setType(Material.OAK_SIGN);
+							currentSign.setType(Material.OAK_WALL_SIGN);
+							Directional directional = (Directional) b.getBlockData();
+							directional.setFacing(BlockFace.NORTH);
+							b.setBlockData(directional);
 							signs.add(currentSign);
 							for(String s : lines) {
 								if(signIndex == 3) {
@@ -110,6 +122,7 @@ public class Chat {
 									signs.add(currentSign);
 								}
 								currentSign.setLine(signIndex, s);
+								currentSign.update();
 							}
 						}
 					}
