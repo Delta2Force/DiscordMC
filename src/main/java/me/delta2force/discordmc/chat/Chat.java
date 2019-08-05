@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.ArmorStand;
@@ -83,21 +84,33 @@ public class Chat {
 						image.setItem(utils.createMapWithURL(entry.message, topLeft.getWorld()));
 						itemFrames.add(image);
 					}else {
-						String[] lines = entry.message.split("(?<=\\G.{15})");
-						Location currentSignLoc = loc.clone().add(-1, 0, 0);
-						int signIndex = 0;
-						Sign currentSign = (Sign) currentSignLoc.getBlock();
-						currentSign.setType(Material.OAK_SIGN);
-						signs.add(currentSign);
-						for(String s : lines) {
-							if(signIndex == 3) {
-								signIndex = 0;
-								currentSignLoc.add(-1, 0, 0);
-								currentSign = (Sign) currentSignLoc.getBlock();
-								currentSign.setType(Material.OAK_SIGN);
-								signs.add(currentSign);
+						if(entry.message.length() < 15) {
+							Location currentSignLoc = loc.clone().add(-1, 0, 0);
+							Block b = currentSignLoc.getBlock();
+							b.setType(Material.OAK_SIGN);
+							Sign currentSign = (Sign) b.getState();
+							currentSign.setType(Material.OAK_SIGN);
+							signs.add(currentSign);
+							currentSign.setLine(0, entry.message);
+						}else{
+							String[] lines = entry.message.split("(?<=\\G.{15})");
+							Location currentSignLoc = loc.clone().add(-1, 0, 0);
+							int signIndex = 0;
+							Block b = currentSignLoc.getBlock();
+							b.setType(Material.OAK_SIGN);
+							Sign currentSign = (Sign) b.getState();
+							currentSign.setType(Material.OAK_SIGN);
+							signs.add(currentSign);
+							for(String s : lines) {
+								if(signIndex == 3) {
+									signIndex = 0;
+									currentSignLoc.add(-1, 0, 0);
+									currentSign = (Sign) currentSignLoc.getBlock();
+									currentSign.setType(Material.OAK_SIGN);
+									signs.add(currentSign);
+								}
+								currentSign.setLine(signIndex, s);
 							}
-							currentSign.setLine(signIndex, s);
 						}
 					}
 				}

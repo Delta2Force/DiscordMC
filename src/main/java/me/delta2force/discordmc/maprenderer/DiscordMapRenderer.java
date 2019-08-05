@@ -43,6 +43,8 @@ public class DiscordMapRenderer extends MapRenderer{
 
 	@Override
 	public void render(MapView map, MapCanvas canvas, Player player) {
-		canvas.drawImage(0, 0, img);
+		if(img != null) {
+			canvas.drawImage(0, 0, img);
+		}
 	}
 }

@@ -169,7 +169,7 @@ public class DiscordMCUtils implements EventListener {
 		if(event instanceof MessageReceivedEvent) {
 			MessageReceivedEvent mre = (MessageReceivedEvent) event;
 			for(Chat c : chats.values()) {
-				if(c.serverId == mre.getGuild().getId() && c.channelId == mre.getChannel().getId()) {
+				if(c.serverId.equals(mre.getGuild().getId()) && c.channelId.equals(mre.getChannel().getId())) {
 					if(mre.getMessage().getEmbeds().size() > 0) {
 						ImageInfo ii = mre.getMessage().getEmbeds().get(0).getImage();
 						if(ii != null) {
