@@ -27,6 +27,7 @@ public class EventListener implements Listener{
 			if(iv.equals(new IntVector(event.getClickedBlock().getLocation()))){
 				Interaction i = discordMC.getUtils().interactions.get(iv);
 				discordMC.getUtils().executeInteraction(i, event.getPlayer());
+				return;
 			}
 		}
 	}

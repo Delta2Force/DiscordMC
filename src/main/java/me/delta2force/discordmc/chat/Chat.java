@@ -32,6 +32,9 @@ public class Chat {
 		this.owner = owner;
 		this.serverId = serverId;
 		this.channelId = utils.getClient().getGuildById(serverId).getDefaultChannel().getId();
+		this.entries = new ArrayList<>();
+		this.itemFrames = new ArrayList<>();
+		this.signs = new ArrayList<>();
 		build();
 	}
 	
