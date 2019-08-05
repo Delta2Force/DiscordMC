@@ -99,7 +99,6 @@ public class Chat {
 							currentSign.update();
 						}else{
 							String[] lines = entry.message.split("(?<=\\G.{15})");
-							Bukkit.broadcastMessage(new Gson().toJson(lines));
 							Location currentSignLoc = loc.clone().add(-1, 0, 0);
 							int signIndex = 0;
 							Sign currentSign = createWallSign(currentSignLoc);
@@ -138,13 +137,11 @@ public class Chat {
 				loc.getBlock().setType(Material.GRAY_WOOL);
 			}
 			Location loc = new Location(topRight.getWorld(), x, topRight.getBlockY()-8, topRight.getZ()-1);
-			loc.getBlock().setType(Material.GRAY_WOOL);
-			loc = new Location(topRight.getWorld(), x, topRight.getBlockY()-8, topRight.getZ()-1);
-			loc.getBlock().setType(Material.GRAY_WOOL);
+			loc.getBlock().setType(Material.SLIME_BLOCK);
 			loc = new Location(topRight.getWorld(), x, topRight.getBlockY()-8, topRight.getZ()-2);
-			loc.getBlock().setType(Material.GRAY_WOOL);
+			loc.getBlock().setType(Material.SLIME_BLOCK);
 			loc = new Location(topRight.getWorld(), x, topRight.getBlockY()-8, topRight.getZ()-3);
-			loc.getBlock().setType(Material.GRAY_WOOL);
+			loc.getBlock().setType(Material.SLIME_BLOCK);
 		}
 		
 		double y = 0;
