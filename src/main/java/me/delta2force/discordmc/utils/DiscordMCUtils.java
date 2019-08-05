@@ -99,6 +99,7 @@ public class DiscordMCUtils implements EventListener {
 			directional.setFacing(BlockFace.NORTH);
 			b.setBlockData(directional);
 			interactions.put(new IntVector(b.getLocation()), new Interaction(InteractiveEnum.JOIN_SERVER, g.getId()));
+			x++;
 		}
 		p.setGameMode(GameMode.ADVENTURE);
 		p.teleport(topLoc.clone().add(0, 1, 0));
