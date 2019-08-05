@@ -53,7 +53,9 @@ public class Chat {
 	}
 	
 	public void update() {
-		titleArmorStand.remove();
+		if(titleArmorStand != null) {
+			titleArmorStand.remove();
+		}
 		titleArmorStand = spawnHologram(topRight.clone().add(4, 1, 0), utils.getClient().getTextChannelById(channelId).getName());
 		for(ItemFrame itf : itemFrames) {
 			itf.remove();
