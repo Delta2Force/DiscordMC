@@ -36,6 +36,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Invite;
+import net.dv8tion.jda.core.entities.Message.Attachment;
 import net.dv8tion.jda.core.entities.MessageEmbed.ImageInfo;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -171,10 +172,10 @@ public class DiscordMCUtils implements EventListener {
 			MessageReceivedEvent mre = (MessageReceivedEvent) event;
 			for(Chat c : chats.values()) {
 				if(c.serverId.equals(mre.getGuild().getId()) && c.channelId.equals(mre.getChannel().getId())) {
-					if(mre.getMessage().getEmbeds().size() > 0) {
-						ImageInfo ii = mre.getMessage().getEmbeds().get(0).getImage();
-						if(ii != null) {
-							c.addEntry(new Chat.ChatEntry(ii.getUrl(), mre.getAuthor().getId(), true));
+					if(mre.getMessage().getAttachments().size() > 0) {
+						Attachment a = mre.getMessage().getAttachments().get(0);
+						if(a.isImage()) {
+							c.addEntry(new Chat.ChatEntry(a.getUrl(), mre.getAuthor().getId(), true));
 						}else {
 							c.addEntry(new Chat.ChatEntry(mre.getMessage().getContentRaw(), mre.getAuthor().getId(), false));
 						}

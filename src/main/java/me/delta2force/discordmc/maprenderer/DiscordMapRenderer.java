@@ -22,9 +22,11 @@ public class DiscordMapRenderer extends MapRenderer{
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 			@Override
 			public void run() {
-				Bukkit.getLogger().info("Downloading image from this url: " + url);
 				try {
-					img = ImageIO.read(new URL(url));
+					if(!plugin.imageBuffer.containsKey(url)) {
+						plugin.imageBuffer.put(url, ImageIO.read(new URL(url)));
+					}
+					img = plugin.imageBuffer.get(url);
 				} catch (MalformedURLException e) {
 					Bukkit.getLogger().info("Error while downloading " + url + " (Malformed URL)");
 					e.printStackTrace();
@@ -32,11 +34,9 @@ public class DiscordMapRenderer extends MapRenderer{
 					Bukkit.getLogger().info("Error while downloading " + url + " (Input/Output Error (disk full?))");
 					e.printStackTrace();
 				}
-				Bukkit.getLogger().info("Resizing image from " + url);
 				BufferedImage nimg = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
 				nimg.createGraphics().drawImage(img, 0, 0, 128, 128, null);
 				img=nimg;
-				Bukkit.getLogger().info("Done!");
 			}
 		});
 	}

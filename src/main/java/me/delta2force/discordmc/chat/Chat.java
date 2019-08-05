@@ -97,6 +97,7 @@ public class Chat {
 							currentSign.update();
 						}else{
 							String[] lines = entry.message.split("(?<=\\G.{15})");
+							Bukkit.broadcastMessage(new Gson().toJson(lines));
 							Location currentSignLoc = loc.clone().add(-1, 0, 0);
 							int signIndex = 0;
 							Sign currentSign = createWallSign(currentSignLoc);
@@ -108,6 +109,7 @@ public class Chat {
 								}
 								currentSign.setLine(signIndex, s);
 								currentSign.update();
+								signIndex++;
 							}
 						}
 					}

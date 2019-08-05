@@ -1,5 +1,9 @@
 package me.delta2force.discordmc;
 
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,6 +14,7 @@ import me.delta2force.discordmc.utils.DiscordMCUtils;
 import net.md_5.bungee.api.ChatColor;
 
 public class DiscordMCPlugin extends JavaPlugin{
+	public Map<String, BufferedImage> imageBuffer = new HashMap<>();
 	private DiscordMCUtils utils;
 	
 	@Override
