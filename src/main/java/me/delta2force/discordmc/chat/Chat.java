@@ -150,7 +150,7 @@ public class Chat {
 		double y = 0;
 		for(TextChannel tc : utils.getClient().getGuildById(serverId).getTextChannels()) {
 			spawnHologram(topRight.clone().add(10, (-1)-y, -2), "#"+tc.getName());
-			y-=0.5;
+			y+=0.5;
 		}
 		owner.teleport(topRight.clone().add(0,1,0));
 	}
